@@ -5,7 +5,7 @@ Morgan Bauer and John Cetinkaya
 A class representing a player's hand in the game Dominion
 
 """
-from card import Card
+from kingdom_card import KingdomCard
 
 class Hand:
     def __init__(self, num_addl_actions = 0, num_addl_buys = 0,
@@ -30,3 +30,28 @@ class Hand:
     @property
     def hand(self) -> list:
         return self.__hand
+
+    def __str__(self) -> str:
+        """Overloads print() to print a textual representation of all cards
+        in a player's hand
+
+        """
+        # TODO Modify this to work for more than six cards
+        # Get the number of rows in the str representation of a card
+        num_rows = len(self.__hand[0].get_row_lyst())
+        rows = [[] for i in range(num_rows)]
+        for i in range(num_rows):
+            for card in self.__hand:
+                rows[i].append(card.get_row_lyst()[i])
+
+        # Freaking unreadable, but you've gotta admit this is slick
+        return "\n".join(["  ".join(row) for row in rows])
+
+if __name__ == "__main__":
+    test_cards = []
+    for card_name in ["Moneylender", "Village", "Spy", "Militia", "Moat",
+                      "Market"]:
+        test_card = KingdomCard(card_name)
+        test_cards.append(test_card)
+    test_hand = Hand(addl_cards = test_cards)
+    print(test_hand)

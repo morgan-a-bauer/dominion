@@ -2,7 +2,8 @@
 Morgan Bauer and John Cetinkaya
 27 March 2024
 
-A class representing a generic card in the game Dominion
+A class representing a generic card in the game Dominion. SupplyCard and
+KingdomCard are child classes of Card
 
 """
 

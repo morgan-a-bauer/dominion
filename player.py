@@ -34,8 +34,11 @@ class Player:
         library
 
         """
+        # Move discard pile to library
         self.__library = self.__discard_pile
         self.__discard_pile = []
+
+        # Shuffle the library
         self.__library.shuffle()
 
     def draw_card(self) -> None:
@@ -48,5 +51,9 @@ class Player:
         self.__hand.append(self.__library.pop())
 
     def draw_new_hand(self, num_addl_cards = 0) -> None:
+        """Draw 5 (or more, dependent on the actions taken during the player's
+        previous turn) new cards at the start of the player's turn
+
+        """
         for i in range(5 + num_addl_cards):
             self.draw_card()
