@@ -30,5 +30,3 @@ class Hand:
     @property
     def hand(self) -> list:
         return self.__hand
-
-    def draw_card(self) -> None:
