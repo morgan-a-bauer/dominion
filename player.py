@@ -19,6 +19,10 @@ class Player:
         self.__hand = Hand()
 
     @property
+    def name(self) -> str:
+        return self.__name
+
+    @property
     def library(self) -> list:
         return self.__library
 
