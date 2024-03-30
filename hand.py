@@ -37,12 +37,15 @@ class Hand:
         in a player's hand
 
         """
-        # TODO Modify this to work for more than six cards
         # Get the number of rows in the str representation of a card
-        num_rows = len(self.__hand[0].get_row_lyst())  # The number of rows in a card
-        num_card_rows = ceil(len(self.__hand) / 5)  # The number of rows of cards
+        num_rows = len(self.__hand[0].get_row_lyst())
+
+        # Calculate the number of rows of cards to print (5 cards per row)
+        num_card_rows = ceil(len(self.__hand) / 5)
+
         rows = [[[] for i in range(num_rows)] for j in range(num_card_rows)]
 
+        # Assemble list of string parts to be joined and returned
         for i in range(num_card_rows):
             for j in range(num_rows):
                 for card in self.__hand[i * 5: i * 5 + 5]:

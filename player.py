@@ -12,7 +12,8 @@ from library import Library
 from random import shuffle
 
 class Player:
-    def __init__(self):
+    def __init__(self, name):
+        self.__name = name
         self.__library = Library()
         self.__discard_pile = DiscardPile()
         self.__hand = Hand()

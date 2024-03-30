@@ -5,3 +5,41 @@ Morgan Bauer and John Cetinkaya
 Utility functions for the game Dominion
 
 """
+from player import Player
+
+def get_players() -> list:
+    """Asks for players to enter their names in the shell and assembles a list
+    of Player objects using those names. Dominion can be played with 2-4 players
+
+    """
+    player_lyst = []
+
+    print("DOMINION can be played with 2-4 players\n")
+
+    # Keep asking for player names to have at most 4 players
+    while len(player_lyst) < 4:
+        try:
+            player_name = input(f"Player {len(player_lyst) + 1}, please enter" +\
+                            " your name: ")
+
+            # Names must contain only letters
+            if not player_name.isalpha():
+                raise ValueError("USAGE: Names must be strictly alphabetic")
+
+            # Append the new player to the list of players
+            new_player = Player(player_name.capitalize())
+            player_lyst.append(new_player)
+
+            # Give the option to play with only 2 or 3 players
+            more_players = "John is an idiot"
+            while more_players not in "yn" and len(player_lyst) != 4:
+                more_players = input("Would you like to add another player? (y/n): ")
+
+            if more_players == "n" and len(player_lyst) >= 2:
+                break
+
+            print()
+        except ValueError as err:
+            print(err)
+
+    return player_lyst
