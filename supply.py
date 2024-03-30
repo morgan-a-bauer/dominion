@@ -21,76 +21,84 @@ class Supply:
         """
 
         # Treasure cards
-        self.__counts = {"Copper": 60 - 7 * num_players,
+        self.__supply_counts = {"Copper": 60 - 7 * num_players,
                          "Silver": 40,
                          "Gold":   30}
 
         # Victory cards for a 2-player game
         if num_players == 2:
             vc_num = 8
-            self.__counts["Curse"] = 10
+            self.__supply_counts["Curse"] = 10
 
         # Victory cards for a 2- or 4-player game
         else:
             vc_num = 12
 
             if num_players == 3:
-                self.__counts["Curse"] = 20
+                self.__supply_counts["Curse"] = 20
 
             else:
-                self.__counts["Curse"] = 30
+                self.__supply_counts["Curse"] = 30
 
-        self.__counts["Estate"] = vc_num
-        self.__counts["Duchy"] = vc_num
-        self.__counts["Province"] = vc_num
+        self.__supply_counts["Estate"] = vc_num
+        self.__supply_counts["Duchy"] = vc_num
+        self.__supply_counts["Province"] = vc_num
 
         # Kingdom Cards
+        self.__kingdom_card_counts = {}
         # If players do not provide kingdom cards to use
         if cards_used == []:
 
             # Choose 10 random cards without replacement
             for i in range(10):
                 card_name = choice(list(kc.keys()))
-                while card_name in self.__counts:
+                while card_name in self.__kingdom_card_counts:
                     card_name = choice(list(kc.keys()))
 
                 # Kingdom Cards of type Victory use the appropriate number
                 # (rather than 10)
                 if kc[card_name][0] == 3:
-                    self.__counts[card_name] = vc_num
+                    self.__kingdom_card_counts[card_name] = vc_num
                 else:
-                    self.__counts[card_name] = 10
+                    self.__kingdom_card_counts[card_name] = 10
 
         # If players do provide kingdom cards to use
         else:
             for i in range(10):
                 # Check for complete or partial list of unique kingdom cards
                 if i < len(cards_used) and cards_used[i] not in\
-                                            self.__counts.keys():
+                                           self.__kingdom_card_counts.keys():
                     card_name = cards_used[i]
 
                 # If a complete list is not provided, randomly choose the rest
                 # without replacement
                 else:
                     card_name = choice(list(kc.keys()))
-                    while card_name in self.__counts:
+                    while card_name in self.__kingdom_card_counts:
                         card_name = choice(list(kc.keys()))
 
                 # Kingdom Cards of type Victory use the appropriate number
                 # (rather than 10)
                 if int(kc[card_name][0]) == 3:
-                    self.__counts[card_name] = vc_num
+                    self.__kingdom_card_counts[card_name] = vc_num
                 else:
-                    self.__counts[card_name] = 10
+                    self.__kingdom_card_counts[card_name] = 10
 
 
     @property
-    def counts(self):
-        return self.__counts
+    def supply_counts(self):
+        return self.__supply_counts
+
+    @property
+    def kingdom_card_counts(self):
+        return self.__kingdom_card_counts
 
     def __str__(self) -> str:
         supply_str = ""
-        for card, num in self.counts.items():
+        for card, num in self.__supply_counts.items():
+            supply_str += f"{card:<12}:{num:>2}\n"
+
+        for card, num in self.__kingdom_card_counts.items():
             supply_str += f"{card:<12}:{num:>2}\n"
 
         return supply_str
@@ -104,8 +112,13 @@ if __name__ == "__main__":
     print("2 players, no cards provided")
     num_plrs = 2
     test_supply1 = Supply(num_plrs)
-    for card, num in test_supply1.counts.items():
+
+    for card, num in test_supply1.supply_counts.items():
         print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply1.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
     print()
     print()
 
@@ -114,8 +127,13 @@ if __name__ == "__main__":
     test_supply2 = Supply(num_plrs, ["Village", "Gardens", "Market", "Spy",
                                      "Smithy", "Witch", "Militia", "Moat",
                                      "Throne Room", "Laboratory"])
-    for card, num in test_supply2.counts.items():
+
+    for card, num in test_supply2.supply_counts.items():
         print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply2.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
     print()
     print()
 
@@ -124,15 +142,139 @@ if __name__ == "__main__":
     test_supply3 = Supply(num_plrs, ["Village", "Village", "Gardens", "Gardens",
                                      "Market", "Market", "Spy", "Spy", "Witch",
                                      "Witch"])
-    for card, num in test_supply3.counts.items():
+
+    for card, num in test_supply3.supply_counts.items():
         print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply3.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
     print()
     print()
 
     # Test 2 players, not all cards provided
     print("2 players, not all cards_provided")
     test_supply4 = Supply(num_plrs, ["Village", "Market", "Witch"])
-    for card, num in test_supply4.counts.items():
+
+    for card, num in test_supply4.supply_counts.items():
         print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply4.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 3 players, no cards provided
+    print("3 players, no cards provided")
+    num_plrs = 3
+    test_supply5 = Supply(num_plrs)
+
+    for card, num in test_supply5.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply5.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 3 players, all cards provided and unique
+    print("3 players, all cards provided and unique")
+    test_supply6 = Supply(num_plrs, ["Village", "Gardens", "Market", "Spy",
+                                     "Smithy", "Witch", "Militia", "Moat",
+                                     "Throne Room", "Laboratory"])
+
+    for card, num in test_supply6.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply6.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 3 players, all cards provided and not unique
+    print("3 players, all cards provided and not unique")
+    test_supply7 = Supply(num_plrs, ["Village", "Village", "Gardens", "Gardens",
+                                     "Market", "Market", "Spy", "Spy", "Witch",
+                                     "Witch"])
+
+    for card, num in test_supply7.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply7.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 3 players, not all cards provided
+    print("3 players, not all cards_provided")
+    test_supply8 = Supply(num_plrs, ["Village", "Market", "Witch"])
+
+    for card, num in test_supply8.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply8.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 4 players, no cards provided
+    print("4 players, no cards provided")
+    num_plrs = 4
+    test_supply9 = Supply(num_plrs)
+
+    for card, num in test_supply9.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply9.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 4 players, all cards provided and unique
+    print("4 players, all cards provided and unique")
+    test_supply10 = Supply(num_plrs, ["Village", "Gardens", "Market", "Spy",
+                                     "Smithy", "Witch", "Militia", "Moat",
+                                     "Throne Room", "Laboratory"])
+
+    for card, num in test_supply10.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply10.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 4 players, all cards provided and not unique
+    print("4 players, all cards provided and not unique")
+    test_supply11 = Supply(num_plrs, ["Village", "Village", "Gardens", "Gardens",
+                                     "Market", "Market", "Spy", "Spy", "Witch",
+                                     "Witch"])
+
+    for card, num in test_supply11.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply11.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    print()
+    print()
+
+    # Test 4 players, not all cards provided
+    print("4 players, not all cards_provided")
+    test_supply12 = Supply(num_plrs, ["Village", "Market", "Witch"])
+
+    for card, num in test_supply12.supply_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
+    for card, num in test_supply12.kingdom_card_counts.items():
+        print(f"{card:<12}:{num:>2}")
+
     print()
     print()

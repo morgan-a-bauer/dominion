@@ -6,6 +6,7 @@ Utility functions for the game Dominion
 
 """
 from player import Player
+from random import shuffle
 
 def get_players() -> list:
     """Asks for players to enter their names in the shell and assembles a list
@@ -35,11 +36,26 @@ def get_players() -> list:
             while more_players not in "yn" and len(player_lyst) != 4:
                 more_players = input("Would you like to add another player? (y/n): ")
 
+            # Make sure there are at least two players to quit player entry
             if more_players == "n" and len(player_lyst) >= 2:
                 break
 
             print()
+
+        # Except clause for non-alphabetic names
         except ValueError as err:
             print(err)
 
+    # Assign random turn order
+    shuffle(player_lyst)
+
     return player_lyst
+
+def game_over(supply_dict: dict) -> bool:
+    if supply_dict["Province"] == 0:
+        return True
+
+    if list(supply_dict.values()).count(0) == 3:
+        return True
+
+    return False
