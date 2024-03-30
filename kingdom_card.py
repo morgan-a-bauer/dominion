@@ -84,8 +84,10 @@ class KingdomCard(Card):
         type = "Action"
         if self.__type == 1:
             type += " - Attack"
+
         elif self.__type == 2:
             type += " - Reaction"
+
         elif self.__type == 3:
             type = "Victory"
 

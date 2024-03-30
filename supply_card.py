@@ -9,10 +9,11 @@ from base_set import supply_cards as sc
 from card import Card
 
 class SupplyCard(Card):
-    def __init__(self):
-        Card.__init()
-        self.__cost = int(sc[self.__name][1])
-        self.__value = int(sc[self.__name][2:])
+    def __init__(self, name):
+        Card.__init__(self, name)
+        self.__type = int(sc[self.name][0])
+        self.__cost = int(sc[self.name][1])
+        self.__value = int(sc[self.name][2:])
 
     @property
     def cost(self) -> int:
@@ -21,3 +22,47 @@ class SupplyCard(Card):
     @property
     def value(self) -> int:
         return self.__value
+
+    def get_row_lyst(self) -> list:
+        """Builds a list of the rows in the textual representation of a card.
+        This is primarily helpful when printing all cards in a player's hand
+
+        """
+        cost = f"({self.__cost})"
+
+        # Display treasure values in parentheses
+        if self.__type == 0:
+            type = "Treasure"
+            value = f"({self.__value})"
+
+        # Display victory values alone
+        elif self.__type == 1:
+            type = "Victory"
+            value = str(self.__value)
+
+        row_lyst = ["+-----------------+", f"|{self.name:^17}|",
+                   "+-----------------+", f"|                 |",
+                   f"|{value:^17}|", f"|                 |",
+                   f"|                 |", "+-----------------+",
+                   f"|{type:^17}|", "+-----------------+", f"|{cost:<17}|",
+                   "+-----------------+"]
+
+        return row_lyst
+
+    def __str__(self) -> str:
+        """Overloads print() to display as output a string representation of a
+        SupplyCard
+
+        """
+        rows = self.get_row_lyst()
+        return "\n".join(rows)
+
+if __name__ == "__main__":
+    test_cards = []
+    for card_name in ["Copper", "Silver", "Gold", "Estate", "Duchy", "Province"]:
+        test_card = SupplyCard(card_name)
+        test_cards.append(test_card)
+    for card in test_cards:
+        print(card)
+        print()
+        print()
