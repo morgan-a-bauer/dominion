@@ -6,6 +6,7 @@ A class representing a player's hand in the game Dominion
 
 """
 from kingdom_card import KingdomCard
+from math import ceil
 
 class Hand:
     def __init__(self, num_addl_actions = 0, num_addl_buys = 0,
@@ -38,19 +39,23 @@ class Hand:
         """
         # TODO Modify this to work for more than six cards
         # Get the number of rows in the str representation of a card
-        num_rows = len(self.__hand[0].get_row_lyst())
-        rows = [[] for i in range(num_rows)]
-        for i in range(num_rows):
-            for card in self.__hand:
-                rows[i].append(card.get_row_lyst()[i])
+        num_rows = len(self.__hand[0].get_row_lyst())  # The number of rows in a card
+        num_card_rows = ceil(len(self.__hand) / 5)  # The number of rows of cards
+        rows = [[[] for i in range(num_rows)] for j in range(num_card_rows)]
+
+        for i in range(num_card_rows):
+            for j in range(num_rows):
+                for card in self.__hand[i * 5: i * 5 + 5]:
+                    rows[i][j].append(card.get_row_lyst()[j])
 
         # Freaking unreadable, but you've gotta admit this is slick
-        return "\n".join(["  ".join(row) for row in rows])
+        # Seriously one of the most ridiculous lines of code though
+        return "\n\n".join(["\n".join(["  ".join(row) for row in rows[i]]) for i in range(len(rows))])
 
 if __name__ == "__main__":
     test_cards = []
     for card_name in ["Moneylender", "Village", "Spy", "Militia", "Moat",
-                      "Market"]:
+                      "Market", "Gardens"]:
         test_card = KingdomCard(card_name)
         test_cards.append(test_card)
     test_hand = Hand(addl_cards = test_cards)
