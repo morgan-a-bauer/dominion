@@ -80,6 +80,7 @@ class KingdomCard(Card):
         if self.__treasure == 0:
             treasure = ""
 
+        # The type of action the card represents
         type = "Action"
         if self.__type == 1:
             type += " - Attack"
@@ -88,6 +89,7 @@ class KingdomCard(Card):
         elif self.__type == 3:
             type = "Victory"
 
+        # Cost of the cards
         cost = "(" + str(self.__cost) + ")"
 
         row_lyst = ["+-----------------+", f"|{self.name:^17}|",
