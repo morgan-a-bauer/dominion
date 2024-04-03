@@ -8,13 +8,13 @@ A class representing a player in the game Dominion
 from card import Card
 from discard_pile import DiscardPile
 from hand import Hand
-from library import Library
+from deck import Deck
 from random import shuffle
 
 class Player:
     def __init__(self, name):
         self.__name = name
-        self.__library = Library()
+        self.__deck = Deck()
         self.__discard_pile = DiscardPile()
         self.__hand = Hand()
 
@@ -23,8 +23,8 @@ class Player:
         return self.__name
 
     @property
-    def library(self) -> list:
-        return self.__library
+    def deck(self) -> list:
+        return self.__deck
 
     @property
     def discard_pile(self) -> list:
@@ -34,26 +34,26 @@ class Player:
     def hand(self) -> list:
         return self.__hand
 
-    def refill_library(self) -> None:
-        """Clears the player's discard pile into their library and shuffles the
-        library
+    def refill_deck(self) -> None:
+        """Clears the player's discard pile into their deck and shuffles the
+        deck
 
         """
-        # Move discard pile to library
-        self.__library = self.__discard_pile
+        # Move discard pile to deck
+        self.__deck = self.__discard_pile
         self.__discard_pile = []
 
-        # Shuffle the library
-        self.__library.shuffle()
+        # Shuffle the deck
+        self.__deck.shuffle()
 
     def draw_card(self) -> None:
-        """Player draws one card to their hand from the top of their library"""
-        # If no cards remain in library, reshuffle discard pile into library
-        if self.__library == []:
-            self.refill_library()
+        """Player draws one card to their hand from the top of their deck"""
+        # If no cards remain in deck, reshuffle discard pile into deck
+        if self.__deck == []:
+            self.refill_deck()
 
         # Draw a card
-        self.__hand.append(self.__library.pop())
+        self.__hand.append(self.__deck.pop())
 
     def draw_new_hand(self, num_addl_cards = 0) -> None:
         """Draw 5 (or more, dependent on the actions taken during the player's

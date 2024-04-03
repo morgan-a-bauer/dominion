@@ -1,20 +1,19 @@
-"""library.py
+"""deck.py
 Morgan Bauer and John Cetinkaya
 28 March 2024
 
-A class representing a player's library in the game Dominion
+A class representing a player's deck in the game Dominion
 
 """
-from kingdom_card import KingdomCard
+from supply_card import SupplyCard
 from math import ceil
 from random import shuffle
-from supply_card import SupplyCard
 
-class Library:
+class Deck:
     def __init__(self):
         self.__deck = []
 
-        # Populate initial library with 7 coppers and 3 estates
+        # Populate initial deck with 7 coppers and 3 estates
         for i in range(7):
             self.__deck.append(SupplyCard("Copper"))
 
@@ -27,7 +26,7 @@ class Library:
 
     def __str__(self) -> str:
         """Overloads print() to print a textual representation of all cards
-        in a player's library
+        in a player's deck
 
         """
         # Get the number of rows in the str representation of a card
@@ -49,5 +48,5 @@ class Library:
         return "\n\n".join(["\n".join(["  ".join(row) for row in rows[i]]) for i in range(len(rows))])
 
 if __name__ == "__main__":
-    test_lib1 = Library()
+    test_lib1 = Deck()
     print(test_lib1)
