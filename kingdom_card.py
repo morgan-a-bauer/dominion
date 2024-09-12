@@ -42,6 +42,20 @@ class KingdomCard(Card):
     def treasure(self) -> int:
         return self.__treasure
 
+    def play(self, player):
+        """Add attributes of the card to the running totals of a given hand.
+        Carry out any special actions
+
+        """
+        hand = player.hand
+        hand.actions += self.__actions - 1
+        hand.buys += self.__buys
+        hand.treasure += self.__treasure
+        for i in range(self.__cards):
+            player.draw_card()
+
+        #TODO: Implement special actions
+
     def get_row_lyst(self) -> list:
         """Builds a list of the rows in the textual representation of a card.
         This is primarily helpful when printing all cards in a player's hand
