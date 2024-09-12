@@ -18,6 +18,7 @@ def get_players() -> list:
     print("DOMINION can be played with 2-4 players\n")
 
     # Keep asking for player names to have at most 4 players
+    #TODO: Deal with extra print of do you want to add another player?
     while len(player_lyst) < 4:
         try:
             player_name = input(f"Player {len(player_lyst) + 1}, please enter" +\
@@ -33,7 +34,8 @@ def get_players() -> list:
 
             # Give the option to play with only 2 or 3 players
             more_players = "John is an idiot"
-            while more_players not in "yn" and len(player_lyst) != 4:
+
+            while more_players not in "yn" or more_players == "yn" or more_players == "" and len(player_lyst) != 4:
                 more_players = input("Would you like to add another player? (y/n): ")
 
             # Make sure there are at least two players to quit player entry

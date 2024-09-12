@@ -10,11 +10,12 @@ from math import ceil
 
 class Hand:
     def __init__(self, num_addl_actions = 0, num_addl_buys = 0,
-                 num_addl_treasure = 0, addl_cards = []):
+                 num_addl_treasure = 0, num_addl_cards = 0):
         self.__actions = 1 + num_addl_actions
         self.__buys = 1 + num_addl_buys
         self.__treasure = num_addl_treasure
-        self.__hand = addl_cards
+        self.__num_addl_cards = num_addl_cards
+        self.__hand = []
 
     @property
     def actions(self) -> int:
@@ -27,6 +28,10 @@ class Hand:
     @property
     def treasure(self) -> int:
         return self.__treasure
+
+    @property
+    def num_addl_cards(self) -> int:
+        return self.__num_addl_cards
 
     @property
     def hand(self) -> list:
@@ -43,6 +48,7 @@ class Hand:
         # Calculate the number of rows of cards to print (5 cards per row)
         num_card_rows = ceil(len(self.__hand) / 5)
 
+        # I know you love this nonsense
         rows = [[[] for i in range(num_rows)] for j in range(num_card_rows)]
 
         # Assemble list of string parts to be joined and returned

@@ -6,12 +6,42 @@ A Python implementation of the popular deck-building game Dominion.
 
 """
 from random import shuffle
+from rules import rule_nums, rule_dict
 from supply import Supply
-from util import get_players
+import util
 
 def main():
     print("Welcome to DOMINION\n")
-    player_lyst = get_players()
+    player_lyst = util.get_players()
+    print("\nIf you need a refresher on any rules of DOMINION, use this menu:\n")
+
+    # Navigate the rules menu in the text-based environment
+    # Selection determines which section of the menu the user may want to access
+    selection = -1
+
+    while selection < 6:  # Selecting 6 indicates being ready to play
+
+        for category, num in rule_nums.items():
+            # Print list of sections of rules
+            print(f"{category:<16}{num:>4}")
+
+        # Get which section to display from user
+        selection = int(input("\nPlease enter the number of the section you would like: "))
+        print()
+
+        if selection < 6:
+            # If the user wants to read a section, display that section
+            print(rule_dict[selection])
+
+    the_supply = Supply(len(player_lyst))
+    player_index = 0
+
+    # Play the game!
+    while not util.game_over(the_supply.supply_counts):
+        curr_player = player_lyst[player_index]
+        print(f"{curr_player.name}'s turn:\n\n")
+        curr_player.take_turn()
+
 
 if __name__ == "__main__":
     main()
