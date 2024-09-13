@@ -20,6 +20,8 @@ class Deck:
         for i in range(3):
             self.__deck.append(SupplyCard("Estate"))
 
+        shuffle(self.__deck)
+
     @property
     def deck(self) -> list:
         return self.__deck

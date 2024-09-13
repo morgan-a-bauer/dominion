@@ -7,10 +7,11 @@ A class representing a player in the game Dominion
 """
 from base_set import kingdom_cards, supply_cards
 from card import Card
+from deck import Deck
 from discard_pile import DiscardPile
 from hand import Hand
-from deck import Deck
 from random import shuffle
+from supply_card import SupplyCard
 
 class Player:
     def __init__(self, name):
@@ -155,11 +156,13 @@ class Player:
             else:
                 not_done = False
 
+        hand_copy = self.__hand.hand[:]
+
         # Count any remaining treasure
-        for card in self.__hand.hand:
+        for card in hand_copy:
 
             # Well this is confusing...type(card) and card.type
-            if type(card) == "SupplyCard":
+            if type(card) == SupplyCard:
                 if card.type == 0:
                     self.__hand.play_card(card.name, self)
 

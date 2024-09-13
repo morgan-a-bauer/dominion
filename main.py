@@ -21,17 +21,21 @@ def main():
 
     while type(selection) != int or selection != 6:  # Selecting 6 indicates being ready to play
 
-        for category, num in rule_nums.items():
-            # Print list of sections of rules
-            print(f"{category:<16}{num:>4}")
+        try:
+            for category, num in rule_nums.items():
+                # Print list of sections of rules
+                print(f"{category:<16}{num:>4}")
 
-        # Get which section to display from user
-        selection = int(input("\nPlease enter the number of the section you would like: "))
-        print()
+            # Get which section to display from user
+            selection = int(input("\nPlease enter the number of the section you would like: "))
+            print()
 
-        if selection < 6:
-            # If the user wants to read a section, display that section
-            print(rule_dict[selection])
+            if selection < 6:
+                # If the user wants to read a section, display that section
+                print(rule_dict[selection])
+
+        except ValueError as e:
+            print("Please input an integer between 1 and 6\n")
 
     the_supply = Supply(len(player_lyst))
     player_index = 0
