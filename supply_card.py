@@ -23,6 +23,20 @@ class SupplyCard(Card):
     def value(self) -> int:
         return self.__value
 
+    def play(self, player):
+        """Add attributes of the card to the running totals of a given hand.
+        Carry out any special actions
+
+        Input:
+        player -- the player whose hand the card belongs to
+
+        """
+        hand = player.hand
+
+        # If the card is a treasure card, add its value to a running total
+        if self.__type == 0:
+            hand.treasure += self.__value
+
     def get_row_lyst(self) -> list:
         """Builds a list of the rows in the textual representation of a card.
         This is primarily helpful when printing all cards in a player's hand

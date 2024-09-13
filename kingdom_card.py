@@ -46,6 +46,9 @@ class KingdomCard(Card):
         """Add attributes of the card to the running totals of a given hand.
         Carry out any special actions
 
+        Input:
+        player -- the player whose hand the card belongs to
+
         """
         hand = player.hand
         hand.actions += self.__actions - 1
