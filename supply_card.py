@@ -16,6 +16,10 @@ class SupplyCard(Card):
         self.__value = int(sc[self.name][2:])
 
     @property
+    def type(self) -> int:
+        return self.__type
+
+    @property
     def cost(self) -> int:
         return self.__cost
 
