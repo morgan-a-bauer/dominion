@@ -29,14 +29,14 @@ def get_players() -> list:
                 raise ValueError("USAGE: Names must be strictly alphabetic")
 
             # Append the new player to the list of players
-            new_player = Player(player_name.capitalize())
+            new_player = Player(player_name.capitalize().strip())
             player_lyst.append(new_player)
 
             # Give the option to play with only 2 or 3 players
             more_players = "John is an idiot"
 
             while more_players not in "yn" or more_players == "yn" or more_players == "" and len(player_lyst) != 4:
-                more_players = input("Would you like to add another player? (y/n): ")
+                more_players = input("Would you like to add another player? (y/n): ").lower().strip()
 
             # Make sure there are at least two players to quit player entry
             if more_players == "n" and len(player_lyst) >= 2:

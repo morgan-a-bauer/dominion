@@ -21,21 +21,53 @@ class Hand:
     def actions(self) -> int:
         return self.__actions
 
+    @actions.setter
+    def actions(self, new_actions) -> None:
+        self.__actions = new_actions
+
     @property
     def buys(self) -> int:
         return self.__buys
+
+    @buys.setter
+    def buys(self, new_buys) -> None:
+        self.__buys = new_buys
 
     @property
     def treasure(self) -> int:
         return self.__treasure
 
+    @treasure.setter
+    def treasure(self, new_treasure) -> None:
+        self.__treasure = new_treasure
+
     @property
     def num_addl_cards(self) -> int:
         return self.__num_addl_cards
 
+    @num_addl_cards.setter
+    def num_addl_cards(self, new_addl_cards) -> None:
+        self.__num_addl_cards = new_addl_cards
+
     @property
     def hand(self) -> list:
         return self.__hand
+
+    def play_card(self, card_name: str, player):
+        """Lets the player play a card from the hand
+
+        Input:
+        card_name -- the name of the card to play
+        player -- the player object that played the card
+
+        """
+        for card in self.__hand:
+            if card.name == card_name:
+                card.play(player)
+                break
+
+        self.__hand.remove(card)
+
 
     def __str__(self) -> str:
         """Overloads print() to print a textual representation of all cards
