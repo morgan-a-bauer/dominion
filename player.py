@@ -255,3 +255,6 @@ class Player:
         # Cleanup phase
         self.__discard_hand()
         self.__draw_new_hand()
+
+        # Make whitespace cleaner
+        print()
