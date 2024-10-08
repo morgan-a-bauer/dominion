@@ -44,7 +44,11 @@ def main():
     while not util.game_over(the_supply.supply_counts):
         curr_player = player_lyst[player_index]
         print(f"{curr_player.name}'s turn:\n")
-        curr_player.take_turn(the_supply.supply_counts)
+        curr_player.take_turn(the_supply)
+
+        # Cycle through players
+        player_index += 1
+        player_index %= len(player_lyst)
 
 
 if __name__ == "__main__":

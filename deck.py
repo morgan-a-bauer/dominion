@@ -26,6 +26,10 @@ class Deck:
     def deck(self) -> list:
         return self.__deck
 
+    @deck.setter
+    def deck(self, new_deck) -> None:
+        self.__deck = new_deck
+
     def __str__(self) -> str:
         """Overloads print() to print a textual representation of all cards
         in a player's deck

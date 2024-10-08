@@ -16,6 +16,10 @@ class DiscardPile:
     def graveyard(self) -> list:
         return self.__graveyard
 
+    @graveyard.setter
+    def graveyard(self, new_graveyard: list) -> None:
+        self.graveyard = new_graveyard
+
     def __str__(self) -> str:
         """Overloads print() to print a textual representation of all cards
         in a player's deck

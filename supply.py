@@ -6,6 +6,8 @@ A class representing the game's supply in the game Dominion
 
 """
 from base_set import kingdom_cards as kc
+from kingdom_card import KingdomCard
+from supply_card import SupplyCard
 from random import choice
 
 class Supply:
@@ -86,6 +88,35 @@ class Supply:
     @property
     def supply_counts(self):
         return self.__supply_counts
+
+    def buy_card(self, card_name: str, cost: int, player) -> None:
+        """Lets the player buy a card from the supply.
+
+        Input:
+        card_name -- the name of the card to buy
+        cost -- the cost of the card to buy
+        player -- the Player object corresponding to the current player
+
+        """
+        # Decrement count of available cards
+        self.supply_counts[card_name] -= 1
+
+        # Create a new card object with the desired name/properties
+        if card_name in kc.keys():
+            new_card = KingdomCard(card_name)
+
+        else:
+            new_card = SupplyCard(card_name)
+
+        # Put the aqcuired card in the player's discard pile
+        player.discard_pile.graveyard.append(new_card)
+
+        # Subtract the cost of the card from the player's available treasure
+        player.hand.treasure -= cost
+
+        # Decrement the player's number of possible buys
+        player.hand.buys -= 1
+
 
     def __str__(self) -> str:
         supply_str = ""

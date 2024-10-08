@@ -59,6 +59,9 @@ class KingdomCard(Card):
 
         #TODO: Implement special actions
 
+        # Put the card in the player's discard pile
+        player.discard_pile.graveyard.append(self)
+
     def get_row_lyst(self) -> list:
         """Builds a list of the rows in the textual representation of a card.
         This is primarily helpful when printing all cards in a player's hand
