@@ -5,9 +5,9 @@ Morgan Bauer and John Cetinkaya
 A Python implementation of the popular deck-building game Dominion.
 
 """
-from random import shuffle
 from rules import rule_nums, rule_dict
 from supply import Supply
+from supply_card import SupplyCard
 import util
 
 def main():
@@ -49,6 +49,65 @@ def main():
         # Cycle through players
         player_index += 1
         player_index %= len(player_lyst)
+
+    high_score = 0
+    winners = []
+
+    # Coutn victory points to determine winner
+    for player in player_lyst:
+        player_score = 0
+
+        # Count victory points in each player's deck
+        for card in player.deck.deck:
+            if type(card) == SupplyCard:
+
+                # If the card is a victory card
+                if card.type == 1:
+                    player_score += card.value
+
+        # Count victory points in each player's hand
+        for card in player.hand.hand:
+            if type(card) == SupplyCard:
+
+                # If the card is a victory card
+                if card.type == 1:
+                    player_score += card.value
+
+        # Count victory points in each player's discard pile
+        for card in player.discard_pile.graveyard:
+            if type(card) == SupplyCard:
+
+                # If the card is a victory card
+                if card.type == 1:
+                    player_score += card.value
+
+        # If there is a tie with the current high score
+        if player_score == high_score:
+            winners.append(player.name)
+
+        # If there is a newly encoutered high score
+        if player_score > high_score:
+            winners.clear()
+            winners.append(player.name)
+            high_score = player_score
+
+        print(f"{player.name:<15}: {player_score:>3}")
+
+    if len(winners) == 1:
+        print(f"\n{winners[0]} won!")
+
+    else:
+        winner_str = ''
+        for name in winners[:-1]:
+            if len(winners) == 2:
+                winner_str += name + ' '
+            else:
+                winner_str += (name + ', ')
+
+        winner_str += f'and {winners[-1]}'
+
+        print(f'\n{winner_str} tied for first!')
+
 
 
 if __name__ == "__main__":
