@@ -53,6 +53,10 @@ class Hand:
     def hand(self) -> list:
         return self.__hand
 
+    @hand.setter
+    def hand(self, new_hand) -> None:
+        self.__hand = new_hand
+
     def play_card(self, card_name: str, player):
         """Lets the player play a card from the hand
 

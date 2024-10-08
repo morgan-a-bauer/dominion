@@ -41,6 +41,8 @@ class SupplyCard(Card):
         if self.__type == 0:
             hand.treasure += self.__value
 
+        player.discard_pile.graveyard.append(self)
+
     def get_row_lyst(self) -> list:
         """Builds a list of the rows in the textual representation of a card.
         This is primarily helpful when printing all cards in a player's hand

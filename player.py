@@ -36,23 +36,23 @@ class Player:
     def hand(self) -> list:
         return self.__hand
 
-    def refill_deck(self) -> None:
+    def __refill_deck(self) -> None:
         """Clears the player's discard pile into their deck and shuffles the
         deck
 
         """
         # Move discard pile to deck
-        self.__deck.deck = self.__discard_pile.graveyard
-        self.__discard_pile.graveyard = []
+        self.__deck.deck = self.__discard_pile.graveyard[:]
+        self.__discard_pile.graveyard.clear()
 
         # Shuffle the deck
-        self.__deck.shuffle()
+        shuffle(self.__deck.deck)
 
     def draw_card(self) -> None:
         """Player draws one card to their hand from the top of their deck"""
         # If no cards remain in deck, reshuffle discard pile into deck
         if self.__deck.deck == []:
-            self.refill_deck()
+            self.__refill_deck()
 
         # Draw a card
         self.__hand.hand.append(self.__deck.deck.pop())
@@ -62,15 +62,20 @@ class Player:
         previous turn) new cards at the start of the player's turn
 
         """
-        for i in range(5 + self.hand.num_addl_cards):
+        for i in range(5 + self.__hand.num_addl_cards):
             self.draw_card()
+        self.__hand.actions = 1
+        self.__hand.buys = 1
+        self.__hand.num_addl_cards = 0
+        self.__hand.treasure = 0
 
     def __discard_hand(self):
         """Discard any cards remaining in the player's hand at the end of a
         turn
 
         """
-        self.__discard_pile.graveyard = self.__discard_pile.graveyard + self.__hand.hand
+        for card in self.__hand.hand:
+            self.__discard_pile.graveyard.append(card)
         self.__hand.hand = []
 
     def __print_current_totals_action(self):
@@ -96,14 +101,15 @@ class Player:
                                        (buys, treasure)):
             print(f"{cat_name:<10}{cat_value:>3}")
 
-    def __action_phase(self, supply_dict: dict) -> None:
+    def __action_phase(self, supply) -> None:
         """Completes the necessary steps for a player's action phase
 
         Input:
-        supply_dict -- a dictionary containing the names of the cards being used
-                       and their counts
+        supply -- The supply object describing available cards
 
         """
+        supply_dict = supply.supply_counts
+
         not_done = True
 
         while not_done:
@@ -169,48 +175,71 @@ class Player:
         return
 
 
-    def __buy_phase(self, supply_dict: dict) -> None:
+    def __buy_phase(self, supply) -> None:
         """Completes the necessary steps for a player's action phase
 
         Input:
-        supply_dict -- a dictionary containing the names of the cards being used
-                       and their counts
+        supply -- The supply object describing available cards
 
         """
-        # Print current counts of buys and treasure
-        self.__print_current_totals_buy()
-        print()
+        supply_dict = supply.supply_counts
 
-        print(f"{'Card name':^15}|{'Cost':^5}|{'Quantity':^5}")
-        for card_name, card_count in supply_dict.items():
-            if card_name in supply_cards.keys():
-                cost = supply_cards[card_name][1]
-            else:
-                cost = kingdom_cards[card_name][1]
+        # Determine if the player wants to buy a card
+        buy_stuff = "Sure"
+        while (buy_stuff not in "yn" or buy_stuff == "yn" or\
+              buy_stuff == "") and self.__hand.buys > 0:
+            # Print current counts of buys and treasure
+            self.__print_current_totals_buy()
+            print()
 
-            print(f"{card_name:^15}|{cost:^5}|{card_count:^5}")
+            # Print labels for supply card info
+            print(f"{'Card name':^15}|{'Cost':^5}|{'Quantity':^5}")
 
-        card_to_buy = "Ace of spades"
-        cost = float("inf")
-        while card_to_buy not in supply_dict or supply_dict[card_to_buy] == 0 or\
-              cost > self.__hand.treasure:
-            card_to_buy = input("Which card would you like to buy? ").strip()
+            # Print info for all cards in the supply
+            for card_name, card_count in supply_dict.items():
 
-            try:
-                if card_to_buy in supply_cards.keys():
-                    cost = supply_cards[card_to_buy][1]
+                # Get card cost
+                if card_name in supply_cards.keys():
+                    cost = supply_cards[card_name][1]
+
                 else:
-                    cost = kingdom_cards[card_to_buy][1]
+                    cost = kingdom_cards[card_name][1]
 
-            except Exception as e:
-                pass
+                print(f"{card_name:^15}|{cost:^5}|{card_count:^5}")
+            print()
 
-    def take_turn(self, supply_dict: dict) -> None:
+            buy_stuff = input("Would you like to buy a card? (y/n): ").lower().strip()
+
+            # If the player wants to buy a card, figure out which one
+            if buy_stuff == "y":
+
+                # Determine the name, availability, and cost of which card the player
+                # would like to buy
+                card_to_buy = "Ace of spades"
+                cost = 8000000
+
+                while card_to_buy not in supply_dict or supply_dict[card_to_buy] == 0 or\
+                    cost > self.__hand.treasure:
+                    card_to_buy = input("Which card would you like to buy? ").capitalize().strip()
+
+                    try:
+                        if card_to_buy in supply_cards.keys():
+                            cost = int(supply_cards[card_to_buy][1])
+
+                        else:
+                            cost = int(kingdom_cards[card_to_buy][1])
+
+                    except Exception as e:
+                        pass
+
+                # Buy the card
+                supply.buy_card(card_to_buy, cost, self)
+
+    def take_turn(self, supply) -> None:
         """Completes the sequential actions needed for a player to take a turn
 
         Input:
-        supply_dict -- a dictionary containing the names of the cards being used
-                       and their counts
+        supply -- The supply object describing available cards
 
         """
         # If the player has no hand, draw a new hand
@@ -218,7 +247,11 @@ class Player:
             self.__draw_new_hand()
 
         # Action phase
-        self.__action_phase(supply_dict)
+        self.__action_phase(supply)
 
-        #Buy phase
-        self.__buy_phase(supply_dict)
+        # Buy phase
+        self.__buy_phase(supply)
+
+        # Cleanup phase
+        self.__discard_hand()
+        self.__draw_new_hand()
