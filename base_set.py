@@ -33,11 +33,12 @@ supply_cards = {"Copper":   "00+1",
 <card_name>[3]: number of additional buys
 <card_name>[4]: number of additional cards
 <card_name>[5]: amount of additional treasure
+<card_name>[6+]: indeces of any special actions to be implemented
 
 
 """
 
-kingdom_cards = {"Cellar":       "021000",
+kingdom_cards = {"Cellar":       "0210000",
                  "Chapel":       "020000",
                  "Moat":         "220020",
                  "Chancellor":   "030002",

@@ -11,13 +11,13 @@ from supply_card import SupplyCard
 from random import choice
 
 class Supply:
-    def __init__(self, num_players: int, cards_used = []):
+    def __init__(self, num_players: int, cards_used: list):
         """Stores a dictionary with card names as keys and the number of cards
         available in the supply as values
 
         Input:
         num_players -- the number of players playing the game
-        cards_used  -- (optional) players may choose to provide a list of
+        cards_used  -- players may choose to provide a list of
                        kingdom cards to be used
 
         """
