@@ -14,3 +14,14 @@ class Card:
     @property
     def name(self) -> str:
         return self.__name
+
+    def discard(self, player) -> None:
+        """Allow the player to discard a card by removing it from the player's
+        hand and placing it in the player's discard pile
+
+        """
+        # Remove card from player's hand
+        player.hand.hand.remove(self)
+
+        # Put the card in the player's discard pile
+        player.discard_pile.graveyard.append(self)

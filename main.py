@@ -8,6 +8,7 @@ A Python implementation of the popular deck-building game Dominion.
 from rules import rule_nums, rule_dict
 from supply import Supply
 from supply_card import SupplyCard
+from base_set import kingdom_cards as kc
 import util
 
 def main():
@@ -37,7 +38,28 @@ def main():
         except ValueError as e:
             print("Please input an integer between 1 and 6\n")
 
-    the_supply = Supply(len(player_lyst))
+    cards_to_use = []
+    new_card = "Pikachu"
+    add_cards = "Absolutely not"
+    num_cards = 0
+    while add_cards != "n" and num_cards < 10:
+        while (add_cards not in "yn" or add_cards == "yn" or\
+                    add_cards == ""):
+            add_cards = input("Would you like to select a card to use for this" +\
+                              " game? (y/n): ").lower().strip()
+
+        # If the use wants to add cards to use for the game
+        if add_cards == "y":
+            new_card = "Queen of Hearts"
+            while new_card not in kc.keys():
+                new_card = input("What card would you like to add to the supply? ").capitalize().strip()
+            print()
+            cards_to_use.append(new_card)
+
+        if add_cards == "y":
+            add_cards = "Pikachu"
+
+    the_supply = Supply(len(player_lyst), cards_to_use)
     player_index = 0
 
     # Play the game!

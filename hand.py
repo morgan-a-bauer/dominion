@@ -70,9 +70,6 @@ class Hand:
                 card.play(player)
                 break
 
-        self.__hand.remove(card)
-
-
     def __str__(self) -> str:
         """Overloads print() to print a textual representation of all cards
         in a player's hand

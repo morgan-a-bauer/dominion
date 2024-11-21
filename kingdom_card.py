@@ -7,16 +7,22 @@ A class representing a kingdom card in the game Dominion
 """
 from base_set import kingdom_cards as kc
 from card import Card
+from special_actions import actions
 
 class KingdomCard(Card):
     def __init__(self, name):
         Card.__init__(self, name)
-        self.__type = int(kc[self.name][0])
-        self.__cost = int(kc[self.name][1])
-        self.__actions = int(kc[self.name][2])
-        self.__buys = int(kc[self.name][3])
-        self.__cards = int(kc[self.name][4])
-        self.__treasure = int(kc[self.name][5])
+        card_info = kc[self.name]
+        self.__type = int(card_info[0])
+        self.__cost = int(card_info[1])
+        self.__actions = int(card_info[2])
+        self.__buys = int(card_info[3])
+        self.__cards = int(card_info[4])
+        self.__treasure = int(card_info[5])
+        if len(card_info) > 6:
+            self.__special_actions = [int(action) for action in card_info[6:]]
+        else:
+            self.__special_actions = []
 
     @property
     def type(self) -> int:
@@ -42,7 +48,7 @@ class KingdomCard(Card):
     def treasure(self) -> int:
         return self.__treasure
 
-    def play(self, player):
+    def play(self, player) -> None:
         """Add attributes of the card to the running totals of a given hand.
         Carry out any special actions
 
@@ -57,10 +63,15 @@ class KingdomCard(Card):
         for i in range(self.__cards):
             player.draw_card()
 
-        #TODO: Implement special actions
+        self.discard(player)
 
-        # Put the card in the player's discard pile
-        player.discard_pile.graveyard.append(self)
+        #TODO: Implement special actions
+        for sa in self.__special_actions:
+            sa = actions[sa]
+            if len(sa) == 1:
+                sa[0](player)
+            else:
+                sa[0](player, sa[1:])
 
     def get_row_lyst(self) -> list:
         """Builds a list of the rows in the textual representation of a card.

@@ -57,6 +57,13 @@ class Player:
         # Draw a card
         self.__hand.hand.append(self.__deck.deck.pop())
 
+    def discard_card(self, card_name: str) -> None:
+        for card in self.__hand.hand:
+            if card.name == card_name:
+                self.__discard_pile.graveyard.append(card)
+                self.__hand.hand.remove(card)
+                break
+
     def __draw_new_hand(self) -> None:
         """Draw 5 (or more, dependent on the actions taken during the player's
         previous turn) new cards at the start of the player's turn
@@ -111,6 +118,7 @@ class Player:
         supply_dict = supply.supply_counts
 
         not_done = True
+        play_more_stuff = "It's unknowable"
 
         while not_done:
             # Print current counts of available actions, buys, and treasure
@@ -122,6 +130,8 @@ class Player:
             print()
 
             play_something = "Not sure yet"
+
+            if play_more_stuff == "y": play_something = "y"
 
             while play_something not in "yn" or play_something == "yn" or\
                   play_something == "":
